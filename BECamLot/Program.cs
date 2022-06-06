@@ -8,9 +8,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorPages();
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-var app = builder.Build();
-
-
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: MyAllowSpecificOrigins,
@@ -22,6 +19,16 @@ builder.Services.AddCors(options =>
                           builder.AllowAnyHeader();
                       });
 });
+builder.Services.AddMvc().AddRazorPagesOptions(options =>
+{
+    options.Conventions.AddPageRoute("/becl", "");
+
+
+});
+
+var app = builder.Build();
+
+
 
 
 
@@ -51,7 +58,7 @@ app.MapPost("api/logout", (ClToken clToken) =>
 
 });
 
-app.MapGet("api/getStandard/{username}", async (http) =>
+app.MapGet("api/getReport/{username}", async (http) =>
 {
     object? username;
     if (!http.Request.RouteValues.TryGetValue("username", out username))
@@ -74,6 +81,74 @@ app.MapGet("api/getStandard/{username}", async (http) =>
     await http.Response.WriteAsJsonAsync(todoItem);
 });
 
+app.MapGet("api/getReport2/{username}", async (http) =>
+{
+    object? username;
+    if (!http.Request.RouteValues.TryGetValue("username", out username))
+    {
+        http.Response.StatusCode = 400;
+        return;
+    }
+
+
+    DalGlobal dalGlobal = new DalGlobal();
+
+
+    var todoItem = await dalGlobal.getReport2(username.ToString());
+    if (todoItem == null)
+    {
+        http.Response.StatusCode = 404;
+        return;
+    }
+
+    await http.Response.WriteAsJsonAsync(todoItem);
+});
+
+app.MapGet("api/getReport3/{username}", async (http) =>
+{
+    object? username;
+    if (!http.Request.RouteValues.TryGetValue("username", out username))
+    {
+        http.Response.StatusCode = 400;
+        return;
+    }
+
+
+    DalGlobal dalGlobal = new DalGlobal();
+
+
+    var todoItem = await dalGlobal.getReport3(username.ToString());
+    if (todoItem == null)
+    {
+        http.Response.StatusCode = 404;
+        return;
+    }
+
+    await http.Response.WriteAsJsonAsync(todoItem);
+});
+
+app.MapGet("api/getReport4/{username}", async (http) =>
+{
+    object? username;
+    if (!http.Request.RouteValues.TryGetValue("username", out username))
+    {
+        http.Response.StatusCode = 400;
+        return;
+    }
+
+
+    DalGlobal dalGlobal = new DalGlobal();
+
+
+    var todoItem = await dalGlobal.getReport4(username.ToString());
+    if (todoItem == null)
+    {
+        http.Response.StatusCode = 404;
+        return;
+    }
+
+    await http.Response.WriteAsJsonAsync(todoItem);
+});
 
 
 

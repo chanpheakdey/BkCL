@@ -7,8 +7,8 @@
         public int BetAmount { get; set; }
         public int WinAmount { get; set; }
         public int Profit { get; set; }
-        public int PP { get; set; }
-        public int SD { get; set; }
+        public double PP { get; set; }
+        public double SD { get; set; }
 
     }
 }
