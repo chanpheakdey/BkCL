@@ -7,7 +7,7 @@
 <link href="~/css/becl.css?v=9" rel="stylesheet" />
   
    
-    <script src="js/jquery-ui.min.js"></script>
+    <script src="js/jquery-3.2.1.min.js"></script>
     <script src="js/becl.js"></script>
 
     <div>
@@ -19,5 +19,36 @@
         <div id="div_report3"></div>
         <div id="div_report4"></div>
 
+    </div>
+    <div>
+        <div>Jackpot</div>
+        <span>
+            <select id="selectMaster" onclick="selectmaster(this)">
+                <option value=""></option>
+            </select>
+        </span>
+        <span>
+            <select id="selectMember">
+                <option value=""></option>
+            </select>
+        </span>
+        <span>
+            <select id="selectAmount">
+                <option value=""></option>
+            </select>
+        </span>
+        <span>
+            <input type="button" value="Submit" onclick="setjakepot()" />
+        </span>
+        <span>
+            <input type="button" value="Remove" onclick="removejakepot()" />
+        </span>
+
+        <div>
+            <input type="button" value="Preview" onclick="showjakepot()" />
+        </div>
+        <div id="div_jackpot">
+
+        </div>
     </div>
     

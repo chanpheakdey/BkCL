@@ -1,4 +1,158 @@
-﻿
+﻿$(document).ready(function () {
+    loadmaster();
+    var selectamount = $("#selectAmount");
+    
+    addJakepotAmout(selectamount);
+});
+
+function setjakepot() {
+    var member = $("#selectMember").val();
+    var amount = $("#selectAmount").val();
+    $.ajax({
+        //cache: false,
+        async: false,
+        type: "POST",
+        //dataType: "Json",
+        contentType: "application/json; charset=utf-8",
+        url: "api/Setjakepot",
+        data: '{"Member":"' + member + '","amount":' + amount + '}',
+        success: function (data) {
+            
+        },
+        error: function (result) {
+            console.log(result);
+            //$('#loading').hide();
+        }
+    });
+
+}
+function addJakepotAmout(selectbox) {
+
+    selectbox.empty();
+    var length = selectbox.length;
+    var newindex = length;
+
+    selectbox.append($('<option>', {
+        value: 0,
+        text: 'Select Amount *'
+    }));
+    //selectbox.options[newindex].style.color = "red";
+
+    for (var i = 1; i < 5; i++) {
+        selectbox.append($('<option>', {
+            value: i*90*1000,
+            text: i * 90 * 1000
+        }));
+    }
+}
+
+function addOptions(selectbox, data) {
+    console.log(data.length);
+    selectbox.empty();
+    var length = selectbox.length;
+    var newindex = length;
+
+    selectbox.append($('<option>', {
+        value: "",
+        text: 'Select Member *'
+    }));
+    //selectbox.options[newindex].style.color = "red";
+
+    for (var i = 0; i < data.length; i++) {
+        var member = data[i];
+        newindex = selectbox.length;
+        //selectbox.options[newindex] = new Option("Program: " + member, member);
+        selectbox.append($('<option>', {
+            value: member,
+            text: member
+        }));
+    }
+}
+function selectmaster(e) {
+    var master = $(e).val();
+    $.ajax({
+        //cache: false,
+        async: false,
+        type: "Get",
+        //dataType: "Json",
+        contentType: "application/json; charset=utf-8",
+        url: "api/getmember/" + master,
+        data: '',
+        success: function (data) {
+            var selectmember = $("#selectMember")
+            addOptions(selectmember, data);
+        },
+        error: function (result) {
+            console.log(result);
+            //$('#loading').hide();
+        }
+    });
+}
+
+function loadmaster() {
+    console.log("load master");
+    $.ajax({
+        //cache: false,
+        async: false,
+        type: "Get",
+        //dataType: "Json",
+        contentType: "application/json; charset=utf-8",
+        url: "api/getmaster",
+        data: '',
+        success: function (data) {
+            var selectmaster = $("#selectMaster");
+            addOptions(selectmaster, data);
+        },
+        error: function (result) {
+            console.log(result);
+            //$('#loading').hide();
+        }
+    });
+}
+
+
+function showjakepot() {
+    $.ajax({
+        //cache: false,
+        async: false,
+        type: "Get",
+        //dataType: "Json",
+        contentType: "application/json; charset=utf-8",
+        url: "api/getJakepot",
+        data: '',
+        success: function (data) {
+            console.log(data);
+            var html = "";
+            html += "<table class='tbl-report' style='font-size:x-small;'>";
+            html += "<td>Username</td>"
+            html += "<td>Amount</td>"
+            html += "<td>ExMaster</td>"
+            html += "<td>ExMember</td>"
+            html += "</tr>"
+
+                var Username = data.username;
+            var Amount = data.amount;
+            var ExMaster = data.exMastername;
+            var ExMember = data.exMember;
+
+                html += "<tr>";
+            html += "<td>" + Username + "</td>";
+            html += "<td>" + Amount + "</td>";
+            html += "<td>" + ExMaster + "</td>";
+            html += "<td>" + ExMember + "</td>";
+                html += "</tr>";
+
+
+            html += "</table>";
+
+            $("#div_jackpot").html(html);
+        },
+        error: function (result) {
+            console.log(result);
+            //$('#loading').hide();
+        }
+    });
+}
 function loadstandard() {
     var username = "chanpheakdey";
     $.ajax({

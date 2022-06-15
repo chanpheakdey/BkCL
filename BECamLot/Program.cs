@@ -13,7 +13,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
                       builder =>
                       {
-                          builder.WithOrigins("https://becl.azurewebsites.net", "https://localhost:7111/");
+                          builder.WithOrigins("https://becl.azurewebsites.net", "https://localhost:7111/", "https://localhost:7282/");
                           //builder.AllowAnyOrigin();
                           builder.AllowAnyMethod();
                           builder.AllowAnyHeader();
@@ -151,5 +151,61 @@ app.MapGet("api/getReport4/{username}", async (http) =>
 });
 
 
+app.MapGet("api/getmember/{master}", async (http) =>
+{
+    object? master;
+    if (!http.Request.RouteValues.TryGetValue("master", out master))
+    {
+        http.Response.StatusCode = 400;
+        return;
+    }
 
+
+    DalGlobal dalGlobal = new DalGlobal();
+
+
+    var todoItem = await dalGlobal.getMember(master.ToString());
+    if (todoItem == null)
+    {
+        http.Response.StatusCode = 404;
+        return;
+    }
+
+    await http.Response.WriteAsJsonAsync(todoItem);
+});
+
+
+app.MapGet("api/getmaster", async (http) =>
+{
+   
+
+    DalGlobal dalGlobal = new DalGlobal();
+
+
+    var todoItem = await dalGlobal.getMaster();
+    if (todoItem == null)
+    {
+        http.Response.StatusCode = 404;
+        return;
+    }
+
+    await http.Response.WriteAsJsonAsync(todoItem);
+});
+
+app.MapGet("api/getJakepot", async (http) =>
+{
+
+
+    DalGlobal dalGlobal = new DalGlobal();
+
+
+    var todoItem = await dalGlobal.getJakepot();
+    if (todoItem == null)
+    {
+        http.Response.StatusCode = 404;
+        return;
+    }
+
+    await http.Response.WriteAsJsonAsync(todoItem);
+});
 app.Run();

@@ -202,5 +202,132 @@ namespace BECamLot.Controller
 
         }
 
+
+        public async Task<List<String>> getMember(string mastername)
+        {
+            try
+            {
+                List<string> memberlist = new List<string>();
+                DataSet ds = new DataSet();
+                await using (SqlConnection connection = new SqlConnection(DalConnection.EDBConnectionString))
+                {
+
+
+                    using (SqlCommand command = new SqlCommand("Sp_getMember", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        SqlParameter sqlParameter1 = command.Parameters.Add("@Mastername", SqlDbType.VarChar);
+                        sqlParameter1.Value = mastername;
+                        connection.Open();
+                        using (SqlDataAdapter da = new SqlDataAdapter(command))
+                        {
+                            da.Fill(ds);
+
+                        }
+                        connection.Close();
+                        for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                        {
+                            string member = ds.Tables[0].Rows[i]["Username"].ToString(); ;
+                            memberlist.Add(member);
+                        }
+
+
+                        return memberlist;
+
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                return null;
+            }
+
+
+        }
+
+        public async Task<List<String>> getMaster()
+        {
+            try
+            {
+                List<string> memberlist = new List<string>();
+                DataSet ds = new DataSet();
+                await using (SqlConnection connection = new SqlConnection(DalConnection.EDBConnectionString))
+                {
+
+
+                    using (SqlCommand command = new SqlCommand("SP_getMaster", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        connection.Open();
+                        using (SqlDataAdapter da = new SqlDataAdapter(command))
+                        {
+                            da.Fill(ds);
+
+                        }
+                        connection.Close();
+                        for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                        {
+                            string mastername = ds.Tables[0].Rows[i]["Username"].ToString(); ;
+                            memberlist.Add(mastername);
+                        }
+
+
+                        return memberlist;
+
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                return null;
+            }
+
+
+        }
+
+        public async Task<ClJakepot> getJakepot()
+        {
+            try
+            {
+               ClJakepot cljakepot = new ClJakepot();   
+                DataSet ds = new DataSet();
+                await using (SqlConnection connection = new SqlConnection(DalConnection.EDBConnectionString))
+                {
+
+
+                    using (SqlCommand command = new SqlCommand("SP_getJakepot", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        connection.Open();
+                        using (SqlDataAdapter da = new SqlDataAdapter(command))
+                        {
+                            da.Fill(ds);
+
+                        }
+                        connection.Close();
+                       
+
+                            cljakepot.Username = ds.Tables[0].Rows[0]["Username"].ToString();
+                            cljakepot.Amount = (int)ds.Tables[0].Rows[0]["Amount"];
+                        cljakepot.ExMastername = ds.Tables[0].Rows[0]["ExMastername"].ToString();
+                        cljakepot.ExMember = ds.Tables[0].Rows[0]["ExMember"].ToString();
+
+
+                        return cljakepot;
+
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                return null;
+            }
+
+
+        }
+
     }
 }
