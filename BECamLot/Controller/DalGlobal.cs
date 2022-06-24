@@ -60,6 +60,50 @@ namespace BECamLot.Controller
 
         }
 
+        public async Task<List<ClReport>> getTestJakepot()
+        {
+            try
+            {
+                List<ClReport> reportList = new List<ClReport>();
+                DataSet ds = new DataSet();
+                await using (SqlConnection connection = new SqlConnection(DalConnection.EDBConnectionString))
+                {
+
+
+                    using (SqlCommand command = new SqlCommand("Sp_testJakepot", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        //SqlParameter sqlParameter1 = command.Parameters.Add("@Username", SqlDbType.VarChar);
+                        //sqlParameter1.Value = Username;
+                        connection.Open();
+                        using (SqlDataAdapter da = new SqlDataAdapter(command))
+                        {
+                            da.Fill(ds);
+
+                        }
+                        connection.Close();
+                        for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                        {
+                            ClReport clReport = new ClReport();
+                            clReport.CreatedBy = (string)ds.Tables[0].Rows[i]["CreatedBy"];
+                            clReport.WinAmount = (int)ds.Tables[0].Rows[i]["WinAmount"];
+                            reportList.Add(clReport);
+                        }
+
+
+                        return reportList;
+
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                return null;
+            }
+
+
+        }
 
         public async Task<List<ClReport>> getReport(string username)
         {

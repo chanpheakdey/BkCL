@@ -8,7 +8,7 @@
   
    
     <script src="js/jquery-3.2.1.min.js"></script>
-    <script src="js/becl.js?v=1"></script>
+    <script src="js/becl.js?v=2"></script>
     <div id="div_be" style="display:none;">
     <div>
         <input  type="button" value="User" onclick="loadstandard('user')" />
@@ -25,7 +25,7 @@
         <div>Jackpot</div>
         <div style="padding: 5px 0px;">
         <span>
-            <select id="selectMaster" onclick="selectmaster(this)">
+            <select id="selectMaster" onchange="selectmaster(this)">
                 <option value=""></option>
             </select>
         </span>
@@ -41,7 +41,7 @@
                 <option value=""></option>
             </select>
         </span>
-        <div style="padding: 5px 0px;">
+        <div style="padding: 15px 0px;">
         <span>
             <input type="button" value="Add Jakepot" onclick="setjakepot()" />
         </span>
@@ -58,6 +58,7 @@
 
         <div>
             <input type="button" value="Jackpot" onclick="showjakepot()" />
+            <input type="button" value="Test Jackpot" onclick="testjakepot()" />
         </div>
         <div id="div_jackpot">
 

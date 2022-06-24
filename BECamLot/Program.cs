@@ -216,6 +216,22 @@ app.MapGet("api/getJakepot", async (http) =>
     await http.Response.WriteAsJsonAsync(todoItem);
 });
 
+app.MapGet("api/TestJakepot", async (http) =>
+{
+
+
+    DalGlobal dalGlobal = new DalGlobal();
+
+
+    var todoItem = await dalGlobal.getTestJakepot();
+    if (todoItem == null)
+    {
+        http.Response.StatusCode = 404;
+        return;
+    }
+
+    await http.Response.WriteAsJsonAsync(todoItem);
+});
 
 app.MapPost("api/Setjakepot", (ClJakepot clJakepot) =>
 {

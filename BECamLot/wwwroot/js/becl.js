@@ -162,7 +162,7 @@ function addOptions(selectbox, data) {
     var length = selectbox.length;
     var newindex = length;
 
-    selectbox.append($('<option>', {
+    selectbox.empty().append($('<option>', {
         value: "",
         text: 'Select Member *'
     }));
@@ -263,6 +263,49 @@ function showjakepot() {
         }
     });
 }
+
+function testjakepot() {
+    $.ajax({
+        //cache: false,
+        async: false,
+        type: "Get",
+        //dataType: "Json",
+        contentType: "application/json; charset=utf-8",
+        url: "api/TestJakepot",
+        data: '',
+        success: function (data) {
+            console.log(data);
+            var html = "";
+            html += "<table class='tbl-report' style='font-size:x-small;'>";
+            html += "<td>Username</td>"
+            html += "<td>Win Amount</td>"
+            html += "</tr>"
+
+            var totalWinAmount = 0;
+            for (var i = 0; i < data.length; i++) {
+                var WinAmount = data[i].winAmount;
+                var createdby = data[i].createdBy;
+
+                totalWinAmount += WinAmount;
+
+                html += "<tr>";
+                html += "<td>" + createdby + "</td>";
+                html += "<td>" + WinAmount + "</td>";
+                html += "</tr>";
+            }
+
+            html += "</table>";
+            html += "<div>Total Win: " + totalWinAmount + "</div>";
+
+            $("#div_jackpot").html(html);
+        },
+        error: function (result) {
+            console.log(result);
+            //$('#loading').hide();
+        }
+    });
+}
+
 function loadstandard(usertype) {
     var username = "chanpheakdey";
     $("#div_report").html("");
