@@ -1,11 +1,66 @@
 ﻿using GameAPI.App_Code;
 using System.Data;
 using System.Data.SqlClient;
-
+using SignalR.Classes;
 namespace BECamLot.Controller
 {
     public class DalGlobal
     {
+
+        public ClToken CheckTokenDetail(ClToken clToken)
+        {
+            ClToken clTokendetail = new ClToken();
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection connection = new SqlConnection(DalConnection.EDBConnectionString))
+                {
+
+
+                    using (SqlCommand command = new SqlCommand("Sp_CheckTokenID", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+
+                        SqlParameter sqlParameter3 = command.Parameters.Add("@TokenID", SqlDbType.VarChar);
+                        sqlParameter3.Value = clToken.TokenID;
+
+
+                        connection.Open();
+                        using (SqlDataAdapter da = new SqlDataAdapter(command))
+                        {
+                            da.Fill(ds);
+
+                        }
+                        connection.Close();
+                        if (ds.Tables[0].Rows.Count > 0)
+                        {
+                            clTokendetail.Expired = (bool)ds.Tables[0].Rows[0]["TokenExpired"];
+                            clTokendetail.Username = (string)ds.Tables[0].Rows[0]["Username"];
+                            clTokendetail.PlaceID = (int)ds.Tables[0].Rows[0]["PlaceID"];
+                            clTokendetail.Nickname = (string)ds.Tables[0].Rows[0]["Username"];
+                            clTokendetail.UserLevel = (string)ds.Tables[0].Rows[0]["UserLevel"];
+                        }
+                        else
+                        {
+                            clTokendetail.Expired = true;
+                            clTokendetail.Expired.ToString();
+                        }
+                        return clTokendetail;
+
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                clTokendetail.Expired = true;
+                clTokendetail.Expired.ToString();
+                return clTokendetail;
+            }
+
+        }
+
+
         public async Task<List<ClReport>> getReport(string username)
         {
             try
@@ -327,6 +382,80 @@ namespace BECamLot.Controller
             }
 
 
+        }
+
+
+        public string SetJakepot(ClJakepot clJakepot)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(DalConnection.EDBConnectionString))
+                {
+                    String sql = "update tblJakepot set Username='" + clJakepot.Username + "', Amount=" + clJakepot.Amount + " where ID=1";
+
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        connection.Open();
+                        command.ExecuteNonQuery();
+                        connection.Close();
+                    }
+                }
+                return "success";
+
+            }
+            catch (SqlException ex)
+            {
+                return "error";
+            }
+        }
+
+        public string RemoveJakepot(ClJakepot clJakepot)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(DalConnection.EDBConnectionString))
+                {
+                    String sql = "update tblJakepot set Username='', Amount=0 where ID=1";
+
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        connection.Open();
+                        command.ExecuteNonQuery();
+                        connection.Close();
+                    }
+                }
+                return "success";
+
+            }
+            catch (SqlException ex)
+            {
+                return "error";
+            }
+        }
+
+
+        public string Setblockwin(ClJakepot clJakepot)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(DalConnection.EDBConnectionString))
+                {
+                    String sql = "update tblJakepot set ExMastername='" + clJakepot.ExMastername + "',ExMember='" + clJakepot.ExMember + "' where ID=1";
+
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        connection.Open();
+                        command.ExecuteNonQuery();
+                        connection.Close();
+                    }
+                }
+                return "success";
+
+            }
+            catch (SqlException ex)
+            {
+                return "error";
+            }
         }
 
     }

@@ -8,10 +8,11 @@
   
    
     <script src="js/jquery-3.2.1.min.js"></script>
-    <script src="js/becl.js"></script>
-
+    <script src="js/becl.js?v=1"></script>
+    <div id="div_be" style="display:none;">
     <div>
-        <input  type="button" value="Preview" onclick="loadstandard()" />
+        <input  type="button" value="User" onclick="loadstandard('user')" />
+        <input  type="button" value="Master" onclick="loadstandard('master')" />
     </div>
     <div id="div_becl">
         <div id="div_report"></div>
@@ -22,6 +23,7 @@
     </div>
     <div>
         <div>Jackpot</div>
+        <div style="padding: 5px 0px;">
         <span>
             <select id="selectMaster" onclick="selectmaster(this)">
                 <option value=""></option>
@@ -32,23 +34,34 @@
                 <option value=""></option>
             </select>
         </span>
+        </div>
+        <div style="padding: 5px 0px;">
         <span>
             <select id="selectAmount">
                 <option value=""></option>
             </select>
         </span>
+        <div style="padding: 5px 0px;">
         <span>
-            <input type="button" value="Submit" onclick="setjakepot()" />
+            <input type="button" value="Add Jakepot" onclick="setjakepot()" />
         </span>
-        <span>
-            <input type="button" value="Remove" onclick="removejakepot()" />
+                <span>
+            <input type="button" value="Block Win" onclick="setblockwin()" />
         </span>
 
+        <span>
+            <input type="button" value="Remove Jakepot" onclick="removejakepot()" />
+        </span>
+        <div id="lblinfo" style="color:red;"></div>
+        </div>
+        </div>
+
         <div>
-            <input type="button" value="Preview" onclick="showjakepot()" />
+            <input type="button" value="Jackpot" onclick="showjakepot()" />
         </div>
         <div id="div_jackpot">
 
         </div>
+    </div>
     </div>
     

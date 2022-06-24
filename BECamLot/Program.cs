@@ -50,6 +50,13 @@ app.UseAuthorization();
 app.MapRazorPages();
 
 
+app.MapPost("api/CheckTokenDetail", (ClToken clToken) =>
+{
+    DalGlobal dalGlobal = new DalGlobal();
+    return dalGlobal.CheckTokenDetail(clToken);
+
+});
+
 app.MapPost("api/logout", (ClToken clToken) =>
 {
     DalGlobal dalGlobal = new DalGlobal();
@@ -207,5 +214,28 @@ app.MapGet("api/getJakepot", async (http) =>
     }
 
     await http.Response.WriteAsJsonAsync(todoItem);
+});
+
+
+app.MapPost("api/Setjakepot", (ClJakepot clJakepot) =>
+{
+    DalGlobal dalGlobal = new DalGlobal();
+    return dalGlobal.SetJakepot(clJakepot);
+
+});
+
+app.MapPost("api/removejakepot", (ClJakepot clJakepot) =>
+{
+    DalGlobal dalGlobal = new DalGlobal();
+    return dalGlobal.RemoveJakepot(clJakepot);
+
+});
+
+
+app.MapPost("api/setblockwin", (ClJakepot clJakepot) =>
+{
+    DalGlobal dalGlobal = new DalGlobal();
+    return dalGlobal.Setblockwin(clJakepot);
+
 });
 app.Run();
